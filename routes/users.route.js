@@ -7,7 +7,6 @@ const {
     getUser,
     updateUser,
     removeUser,
-    login,
 } = usersController;
 
 router.route('/').get(listUsers);
@@ -19,7 +18,5 @@ router.route('/:id').get(getUser);
 router.route('/:id').put(updateUser);
 
 router.route('/:id').delete(removeUser);
-
-router.route('/login').post(login);
 
 module.exports = router;

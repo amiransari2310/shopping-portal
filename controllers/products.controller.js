@@ -32,7 +32,7 @@ const listProducts = async (req, res) => {
             data && data.length > 0 ? 'Products Records Fetched Successfully.' : 'No Records Found For Products.'
         );
     } catch (err) {
-        sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Fetchig Products Records.');
+        sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Fetching Products Records.');
     }
 }
 

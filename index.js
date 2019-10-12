@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
-const { usersRoutes, productsRoutes } = require('./routes');
-const { dbUtil, apiUtil } = require('./utils');
-const { initConnection, closeConnection, loadData } = dbUtil;
-const { getApiSwaggerJson } = apiUtil;
+const { usersRoutes, productsRoutes, authRoutes } = require('./routes');
+const { 
+    dbUtil: { initConnection, closeConnection, loadData } = {},
+    apiUtil: { getApiSwaggerJson } = {},
+} = require('./utils');
+const { sessionMiddleware } = require('./middlewares');
 
 const init = () => {
     (async () => {
@@ -29,7 +31,10 @@ app.set('json spaces', 2);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(sessionMiddleware);
+
 app.use('/users', usersRoutes);
+app.use('/auth', authRoutes);
 app.use('/products', productsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(getApiSwaggerJson()));

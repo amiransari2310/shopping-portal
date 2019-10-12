@@ -144,10 +144,10 @@ paths:
           description: "Error In Remove By Id"
           schema:
             $ref: "#/definitions/response"     
-  /users/login:
+  /auth/login:
     post:
       tags:
-      - "Login"
+      - "Auth"
       summary: "User Login"
       operationId: "login"
       consumes:
@@ -163,11 +163,27 @@ paths:
           $ref: "#/definitions/login"
       responses:
         200:
-          description: "Successful Remove By Id"
+          description: "Successful Login"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Remove By Id"
+          description: "Error In Login"
+          schema:
+            $ref: "#/definitions/response"  
+    get:
+      tags:
+      - "Auth"
+      summary: "User Logout"
+      operationId: "logout"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful Logout"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In logout"
           schema:
             $ref: "#/definitions/response"            
   /products:

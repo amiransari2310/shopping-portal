@@ -1,6 +1,7 @@
 const {
     users: usersModel,
     products: productsModel,
+    sessions: sessionsModel,
 } = require('../models');
 
 /**
@@ -16,6 +17,9 @@ const getModel = (serviceName) => {
             break;
         case 'products':
             model = productsModel;
+            break;
+        case 'sessions':
+            model = sessionsModel;
             break;
         default:
             model = null;
