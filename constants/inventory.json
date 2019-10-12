@@ -1,0 +1,352 @@
+[
+	{
+		"productId": "product1",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product2",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product3",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product4",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product5",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product6",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product7",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product8",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product9",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product10",
+		"name": "Shirt",
+		"costPrice": 10,
+		"sellingPrice": 15,
+		"stock": 20
+	},
+	{
+		"productId": "product11",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product12",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product13",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product14",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product15",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product16",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product17",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product18",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product19",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product20",
+		"name": "T-Shirt",
+		"costPrice": 20,
+		"sellingPrice": 25,
+		"stock": 20
+	},
+	{
+		"productId": "product21",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product22",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product23",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product24",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product25",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product26",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product27",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product28",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product29",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product30",
+		"name": "Jeans",
+		"costPrice": 30,
+		"sellingPrice": 35,
+		"stock": 20
+	},
+	{
+		"productId": "product31",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product32",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product33",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product34",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product35",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product36",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product37",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product38",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product39",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product40",
+		"name": "Shoe",
+		"costPrice": 40,
+		"sellingPrice": 45,
+		"stock": 20
+	},
+	{
+		"productId": "product41",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product42",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product43",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product44",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product45",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product46",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product47",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product48",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product49",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	},
+	{
+		"productId": "product50",
+		"name": "Jacket",
+		"costPrice": 50,
+		"sellingPrice": 55,
+		"stock": 20
+	}
+]

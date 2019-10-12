@@ -1,0 +1,378 @@
+swagger: "2.0"
+info:
+  description: "This is the Open API Specification for shopping-portal Service"
+  version: "1.0.0"
+  title: "Shopping Portal Service"
+  contact:
+    email: "amiransari2310@gmail.com"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /users:
+    get:
+      tags:
+      - "Users"
+      summary: "Get All Users By Params"
+      operationId: "listUsers"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "filter"
+        in: "query"
+        description: "Valid stringify JSON object as basic mongo query filter"
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "Valid field from collection to sort documents"
+        type: "string"
+      - name: "page"
+        in: "query"
+        description: "valid number as a page number for pagination"
+        type: "string"
+      - name: "count"
+        in: "query"
+        description: "Valid number as number of documents to be return"
+        type: "string"
+      responses:
+        200:
+          description: "Successful GET All"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In GET All"
+          schema:
+            $ref: "#/definitions/response"
+    post:
+      tags:
+      - "Users"
+      summary: "Add a new User"
+      operationId: "createUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Valid User Object to Insert in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "Successful User Create"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In User Create"
+          schema:
+            $ref: "#/definitions/response"
+  /users/{id}:
+    get:
+      tags:
+      - "Users"
+      summary: "Get User By Id"
+      operationId: "getUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      responses:
+        200:
+          description: "Successful GET By Id"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In GET By Id"
+          schema:
+            $ref: "#/definitions/response"
+    put:
+      tags:
+      - "Users"
+      summary: "Update a User"
+      operationId: "update"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Valid User Object to Update in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "Successful Update User"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Update User"
+          schema:
+            $ref: "#/definitions/response"
+    delete:
+      tags:
+      - "Users"
+      summary: "Delete User By Id"
+      operationId: "removeUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      responses:
+        200:
+          description: "Successful Remove By Id"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Remove By Id"
+          schema:
+            $ref: "#/definitions/response"     
+  /users/login:
+    post:
+      tags:
+      - "Login"
+      summary: "User Login"
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "User Id and Password i.e Login Payload"
+        required: true
+        schema:
+          $ref: "#/definitions/login"
+      responses:
+        200:
+          description: "Successful Remove By Id"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Remove By Id"
+          schema:
+            $ref: "#/definitions/response"            
+  /products:
+    get:
+      tags:
+      - "Products"
+      summary: "Get All Products By Params"
+      operationId: "listProducts"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "filter"
+        in: "query"
+        description: "Valid stringify JSON object as basic mongo query filter"
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "Valid field from collection to sort documents"
+        type: "string"
+      - name: "page"
+        in: "query"
+        description: "valid number as a page number for pagination"
+        type: "string"
+      - name: "count"
+        in: "query"
+        description: "Valid number as number of documents to be return"
+        type: "string"
+      responses:
+        200:
+          description: "Successful GET All"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In GET All"
+          schema:
+            $ref: "#/definitions/response"
+    post:
+      tags:
+      - "Products"
+      summary: "Add a new Product"
+      operationId: "createProduct"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Valid Product Object to Insert in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/product"
+      responses:
+        200:
+          description: "Successful Product Create"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Product Create"
+          schema:
+            $ref: "#/definitions/response"
+  /products/{id}:
+    get:
+      tags:
+      - "Products"
+      summary: "Get Product By Id"
+      operationId: "getProduct"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      responses:
+        200:
+          description: "Successful GET By Id"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In GET By Id"
+          schema:
+            $ref: "#/definitions/response"
+    put:
+      tags:
+      - "Products"
+      summary: "Update a Product"
+      operationId: "updateProduct"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Valid Product Object to Update in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/product"
+      responses:
+        200:
+          description: "Successful Update Product"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Update Product"
+          schema:
+            $ref: "#/definitions/response"
+    delete:
+      tags:
+      - "Products"
+      summary: "Delete Product By Id"
+      operationId: "removeProduct"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        description: "Valid document id"
+        type: "string"
+      responses:
+        200:
+          description: "Successful Remove By Id"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Remove By Id"
+          schema:
+            $ref: "#/definitions/response"     
+definitions:
+  response:
+    type: "object"
+    properties:
+      statusCode:
+        type: "integer"
+        format: "int64"
+        enum: 
+          - 200
+          - 500
+          - 422
+          - 400
+      status:
+        type: "string"
+        enum:
+          - "ok"
+          - "error"
+          - "missingParam"
+          - "badRequest"
+      data:
+        type: "object"
+      message:
+        type: "string"
+  user:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      userName:
+        type: "string"
+      emailId:
+        type: "string"
+      mobileNumber:
+        type: "integer"
+      password:
+        type: "string"
+    required:
+    - "firstName"
+    - "userName"
+    - "emailId"
+    - "password"
+  login:
+    type: "object"
+    properties:
+      user:
+        type: "string"
+      password:
+        type: "string"
+    required:
+      - "user"
+      - "password"
+  product:
+    type: "object"
+    properties:
+      productId:
+        type: "string"
+      name:
+        type: "string"
+      costPrice:
+        type: "integer"
+      sellingPrice:
+        type: "integer"
+      stock:
+        type: "integer"
+    enum:
+      - "productId"
+      - "name"
+      - "costPrice"
+      - "sellingPrice"
+      - "stock"

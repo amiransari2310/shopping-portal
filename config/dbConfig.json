@@ -1,0 +1,8 @@
+{
+    "test": {
+        "mongoURI": "mongodb://localhost:27017/shop"
+    },
+    "development": {
+        "mongoURI": "mongodb://localhost:27017/shop"
+    }
+}
