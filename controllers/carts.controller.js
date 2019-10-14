@@ -38,7 +38,7 @@ const createOrupdateCart = async (req, res) => {
         const opEnums = ['add', 'remove'];
         let data = null;
 
-        if (!op || (op && !opEnums.includes(op))) {
+        if (!opEnums.includes(op)) {
             sendErrorResponse({ req, res }, 'badRequest', 400, {}, `Missing/Invalid Value For Query Param: 'op'. Possible values are: [${opEnums}]`);
         } else {
             const cart = await findOneFromDb({ user }, '', 'carts');

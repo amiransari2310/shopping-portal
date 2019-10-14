@@ -43,7 +43,7 @@ paths:
         500:
           description: "Error In GET All"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     post:
       tags:
       - "Users"
@@ -68,7 +68,7 @@ paths:
         500:
           description: "Error In User Create"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
   /users/{id}:
     get:
       tags:
@@ -91,7 +91,7 @@ paths:
         500:
           description: "Error In GET By Id"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     put:
       tags:
       - "Users"
@@ -121,7 +121,7 @@ paths:
         500:
           description: "Error In Update User"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     delete:
       tags:
       - "Users"
@@ -143,7 +143,7 @@ paths:
         500:
           description: "Error In Remove By Id"
           schema:
-            $ref: "#/definitions/response"     
+            $ref: "#/definitions/errorResponse"     
   /auth/login:
     post:
       tags:
@@ -169,7 +169,7 @@ paths:
         500:
           description: "Error In Login"
           schema:
-            $ref: "#/definitions/response"  
+            $ref: "#/definitions/errorResponse"  
     get:
       tags:
       - "Auth"
@@ -185,7 +185,7 @@ paths:
         500:
           description: "Error In logout"
           schema:
-            $ref: "#/definitions/response"            
+            $ref: "#/definitions/errorResponse"            
   /products:
     get:
       tags:
@@ -219,7 +219,7 @@ paths:
         500:
           description: "Error In GET All"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     post:
       tags:
       - "Products"
@@ -244,7 +244,7 @@ paths:
         500:
           description: "Error In Product Create"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
   /products/{id}:
     get:
       tags:
@@ -267,7 +267,7 @@ paths:
         500:
           description: "Error In GET By Id"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     put:
       tags:
       - "Products"
@@ -297,7 +297,7 @@ paths:
         500:
           description: "Error In Update Product"
           schema:
-            $ref: "#/definitions/response"
+            $ref: "#/definitions/errorResponse"
     delete:
       tags:
       - "Products"
@@ -319,7 +319,49 @@ paths:
         500:
           description: "Error In Remove By Id"
           schema:
-            $ref: "#/definitions/response"     
+            $ref: "#/definitions/errorResponse"     
+  /carts:
+    get:
+      tags:
+      - "Carts"
+      summary: "Get Logged In Users Cart"
+      operationId: "getCart"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful GET Cart"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In GET Cart"
+          schema:
+            $ref: "#/definitions/errorResponse"
+    post:
+      tags:
+      - "Carts"
+      summary: "Add/Updates a Cart"
+      operationId: "createOrupdateCart"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Object Containing List Of Products To Be Add/Remove"
+        required: true
+        schema:
+          $ref: "#/definitions/cart"
+      responses:
+        200:
+          description: "Successful Cart Create Or Add/Remove Products"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Error In Product Create Or Add/Remove Products"
+          schema:
+            $ref: "#/definitions/errorResponse"
 definitions:
   response:
     type: "object"
@@ -329,13 +371,28 @@ definitions:
         format: "int64"
         enum: 
           - 200
+          - 204
+      status:
+        type: "string"
+        enum:
+          - "ok"
+      data:
+        type: "object"
+      message:
+        type: "string"
+  errorResponse:
+    type: "object"
+    properties:
+      statusCode:
+        type: "integer"
+        format: "int64"
+        enum: 
           - 500
           - 422
           - 400
       status:
         type: "string"
         enum:
-          - "ok"
           - "error"
           - "missingParam"
           - "badRequest"
@@ -392,3 +449,25 @@ definitions:
       - "costPrice"
       - "sellingPrice"
       - "stock"
+  cart:
+    type: "object"
+    properties:
+      user:
+        type: "string"
+      products:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            productId:
+              type: "string"
+            quantity:
+              type: "integer"
+            costPerUnit:
+              type: "integer"
+            cost:
+              type: "integer"
+      totalCost:
+        type: integer
+    required:
+      - user

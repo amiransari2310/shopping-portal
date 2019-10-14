@@ -12,7 +12,7 @@ describe("/auth", () => {
         try {
             await model.deleteMany({});
         } catch (err) {
-            console.log("Error While deleteMany() In beforEach() Of Users => ", err);
+            console.log("Error While deleteMany() In beforEach() Of Auth => ", err);
         }
     });
 
