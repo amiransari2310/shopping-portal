@@ -2,6 +2,7 @@ const {
     users: usersModel,
     products: productsModel,
     sessions: sessionsModel,
+    carts: cartsModel,
 } = require('../models');
 
 /**
@@ -20,6 +21,9 @@ const getModel = (serviceName) => {
             break;
         case 'sessions':
             model = sessionsModel;
+            break;
+        case 'carts':
+            model = cartsModel;
             break;
         default:
             model = null;
@@ -77,7 +81,7 @@ const createDataInDb = (payload, serviceName) => {
  * @return {promise} - Promise That Executes Mongo Query To Fetch Data From Db
  */
 const getDataFromDb = (id, select = '', serviceName) => {
-    return getModel(serviceName).findById(id).select(select).lean();
+    return getModel(serviceName).findById(id).select(select);
 }
 
 /**

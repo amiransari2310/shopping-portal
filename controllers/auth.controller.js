@@ -84,6 +84,12 @@ const logout = async (req, res) => {
     }
 }
 
+/**
+ * Creates/Updates Session On Login
+ * @param {string} user - UserId Of the LoggedIn User
+ * @param {string} token - Token
+ * @returns {string} sessionId - SessionId Of The Session Created
+ */
 const handleSessionOnLogin = async (user, token) => {
     try {
         const isSessionExists = await findOneFromDb({ user }, '', 'sessions');
@@ -105,6 +111,10 @@ const handleSessionOnLogin = async (user, token) => {
     }
 };
 
+/**
+ * Removes Session On Logout
+ * @param {string} user - UserId Of the LoggedIn User
+ */
 const handleSessionOnLogout = async (user) => {
     try {
         const session = await findOneFromDb({ user }, '', 'sessions') || {};

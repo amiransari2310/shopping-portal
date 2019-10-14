@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
-const { usersRoutes, productsRoutes, authRoutes } = require('./routes');
-const { 
+const { usersRoutes, productsRoutes, authRoutes, cartsRoutes } = require('./routes');
+const {
     dbUtil: { initConnection, closeConnection, loadData } = {},
     apiUtil: { getApiSwaggerJson } = {},
 } = require('./utils');
@@ -36,6 +36,7 @@ app.use(sessionMiddleware);
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 app.use('/products', productsRoutes);
+app.use('/carts', cartsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(getApiSwaggerJson()));
 
