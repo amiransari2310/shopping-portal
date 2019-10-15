@@ -1,17 +1,16 @@
 const { jwtHelper: { decodeToken, verifyToken } = {} } = require('../helpers');
 const { responseHandler: { sendErrorResponse, } = {} } = require('../utils');
 
-
 /**
  * To decode token and add logged in user object in req object
  * Deperecated - This fearure is now handled in auth Middleware during token validation
  */
-const sessionMiddleware = (req, res, next) => {
-    const { headers: { authorization = '' } = {} } = req;
-    const token = authorization.startsWith('Bearer') ? authorization.replace('Bearer ', '').trim() : authorization;
-    req.user = token ? decodeToken(token) : {};
-    next();
-};
+// const sessionMiddleware = (req, res, next) => {
+//     const { headers: { authorization = '' } = {} } = req;
+//     const token = authorization.startsWith('Bearer') ? authorization.replace('Bearer ', '').trim() : authorization;
+//     req.user = token ? decodeToken(token) : {};
+//     next();
+// };
 
 /**
  * To validate the authorisation token
@@ -46,6 +45,6 @@ const authMiddleware = async (req, res, next) => {
 
 // Exporting middleware methods
 module.exports = {
-    sessionMiddleware,
+    // sessionMiddleware,
     authMiddleware,
 }

@@ -20,14 +20,14 @@ const generateToken = (payload) => {
  * @param {string} - Valid JWT Token 
  * @returns {object} - Decoded Object
  */
-const decodeToken = (token) => {
-    try {
-        return jwt.decode(token) || {};
-    } catch (err) {
-        console.log("Error While Decoding: ", err);
-        throw err;
-    }
-}
+// const decodeToken = (token) => {
+//     try {
+//         return jwt.decode(token) || {};
+//     } catch (err) {
+//         console.log("Error While Decoding: ", err);
+//         throw err;
+//     }
+// }
 
 const verifyToken = (token) => {
     try {
@@ -39,7 +39,7 @@ const verifyToken = (token) => {
 }
 
 module.exports = {
-    decodeToken,
+    // decodeToken,
     generateToken,
     verifyToken,
 }
