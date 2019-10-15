@@ -3,7 +3,7 @@ const statusCodeMapping = {
     error: 500,
     missingParam: 422,
     badRequest: 400,
-    // notFound: 204,
+    unauthorize: 401,
 };
 
 exports = {

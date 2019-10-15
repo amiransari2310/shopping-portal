@@ -6,7 +6,7 @@ const {
     dbUtil: { initConnection, closeConnection, loadData } = {},
     apiUtil: { getApiSwaggerJson } = {},
 } = require('./utils');
-const { sessionMiddleware } = require('./middlewares');
+const { authMiddleware } = require('./middlewares');
 
 const init = () => {
     (async () => {
@@ -31,12 +31,13 @@ app.set('json spaces', 2);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(sessionMiddleware);
-
-app.use('/users', usersRoutes);
+/**
+ * App routes
+ */
 app.use('/auth', authRoutes);
-app.use('/products', productsRoutes);
-app.use('/carts', cartsRoutes);
+app.use('/users', usersRoutes);
+app.use('/products', authMiddleware, productsRoutes);
+app.use('/carts', authMiddleware, cartsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(getApiSwaggerJson()));
 
