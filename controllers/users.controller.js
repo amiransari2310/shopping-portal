@@ -1,5 +1,6 @@
 const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
 const { crudService } = require('../services');
+const { validationUtil: { validate = () => {} } } = require('../utils');
 const {
     listDataFromDb,
     createDataInDb,
@@ -41,9 +42,15 @@ const listUsers = async (req, res) => {
  */
 const createUser = async (req, res) => {
     try {
-        const data = await createDataInDb(req.body, 'users');
-        const { _id } = data;
-        sendSuccessResponse({ req, res }, 'ok', 201, { _id }, 'Users Record Created Successfully.');
+        const { error } = validate(req.body, 'users');
+        const [isValid, errors] = [!error, error];
+        if(isValid) {
+            const data = await createDataInDb(req.body, 'users');
+            const { _id } = data;
+            sendSuccessResponse({ req, res }, 'ok', 201, { _id }, 'Users Record Created Successfully.');
+        } else {
+            sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid User Payload.');
+        }
     } catch (err) {
         console.log(err)
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Creating Users Record.');
@@ -75,17 +82,31 @@ const updateUser = async (req, res) => {
     try {
         const isExist = await getDataFromDb(req.params.id, '', 'users');
         let data = null;
-        if (isExist) {
-            data = await updateDataInDb(req.params.id, req.body, 'users');
-            data.password = undefined;
+        if(!isExist) {
+            sendSuccessResponse(
+                { req, res },
+                'ok',
+                204,
+                {},
+                `No Record Found For Id: '${req.params.id}' In Users.`
+            );
+        } else {
+            const { error } = validate(req.body, 'users');
+            const [isValid, errors] = [!error, error];
+            if(isValid) {
+                data = await updateDataInDb(req.params.id, req.body, 'users');
+                data.password = undefined;
+                sendSuccessResponse(
+                    { req, res },
+                    'ok',
+                    200,
+                    data,
+                    `Users Record With Id: '${req.params.id}' Updated Successfully In Users.`
+                );
+            } else {
+                sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid User Payload.');
+            }
         }
-        sendSuccessResponse(
-            { req, res },
-            'ok',
-            isExist ? 200 : 204,
-            isExist ? data : {},
-            isExist ? `Users Record With Id: '${req.params.id}' Updated Successfully In Users.` : `No Record Found For Id: '${req.params.id}' In Users.`
-        );
     } catch (err) {
         console.log(err)
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Updating User Record.');

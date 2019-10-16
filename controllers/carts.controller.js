@@ -1,6 +1,7 @@
 const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
 const { authHelper } = require('../helpers');
 const { crudService } = require('../services');
+const { validationUtil: { validate = () => { } } } = require('../utils');
 const {
     createDataInDb,
     updateDataInDb,
@@ -34,49 +35,54 @@ const createOrupdateCart = async (req, res) => {
     try {
         const userObject = authHelper.getUserObject(req);
         const { params: { op } = {}, body: payload } = req;
-        const { _id: user } = userObject;
-        const opEnums = ['add', 'remove'];
-        let data = null;
+        const { error } = validate(payload, 'carts');
+        const [isValid, errors] = [!error, error];
+        if (isValid) {
+            const { _id: user } = userObject;
+            const opEnums = ['add', 'remove'];
+            let data = null;
+            if (!opEnums.includes(op)) {
+                sendErrorResponse({ req, res }, 'badRequest', 400, {}, `Missing/Invalid Value For Query Param: 'op'. Possible values are: [${opEnums}]`);
+            } else {
+                const cart = await findOneFromDb({ user }, '', 'carts');
+                const cartObj = cart ? cart.toObject() : {};
 
-        if (!opEnums.includes(op)) {
-            sendErrorResponse({ req, res }, 'badRequest', 400, {}, `Missing/Invalid Value For Query Param: 'op'. Possible values are: [${opEnums}]`);
-        } else {
-            const cart = await findOneFromDb({ user }, '', 'carts');
-            const cartObj = cart ? cart.toObject() : {};
-
-            if (!cart) {
-                if (op === 'add') {
-                    const { products: newProductList = [] } = payload;
-                    const { products, totalCost } = addProducts([], newProductList, 0);
-                    const createPayload = { user, products, totalCost };
-                    data = await createDataInDb(createPayload, 'carts');
+                if (!cart) {
+                    if (op === 'add') {
+                        const { products: newProductList = [] } = payload;
+                        const { products, totalCost } = addProducts([], newProductList, 0);
+                        const createPayload = { user, products, totalCost };
+                        data = await createDataInDb(createPayload, 'carts');
+                        sendSuccessResponse(
+                            { req, res },
+                            'ok',
+                            200,
+                            data,
+                            `Cart Created Successfully For User: '${user}' In Carts.`
+                        );
+                    } else {
+                        sendSuccessResponse(
+                            { req, res },
+                            'ok',
+                            204,
+                            {},
+                            `Cart Not Found For User: '${user}' In Carts.`
+                        );
+                    }
+                } else {
+                    const updatePayload = getCartData(cart, payload, op);
+                    data = await updateDataInDb(cartObj._id, updatePayload, 'carts');
                     sendSuccessResponse(
                         { req, res },
                         'ok',
                         200,
                         data,
-                        `Cart Created Successfully For User: '${user}' In Carts.`
-                    );
-                } else {
-                    sendSuccessResponse(
-                        { req, res },
-                        'ok',
-                        204,
-                        {},
-                        `Cart Not Found For User: '${user}' In Carts.`
+                        `Carts For User: '${user}' Updated Successfully In Carts.`
                     );
                 }
-            } else {
-                const updatePayload = getCartData(cart, payload, op);
-                data = await updateDataInDb(cartObj._id, updatePayload, 'carts');
-                sendSuccessResponse(
-                    { req, res },
-                    'ok',
-                    200,
-                    data,
-                    `Carts For User: '${user}' Updated Successfully In Carts.`
-                );
             }
+        } else {
+            sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid Cart Payload.');
         }
     } catch (err) {
         console.log(err)

@@ -1,5 +1,6 @@
 const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
 const { crudService } = require('../services');
+const { validationUtil: { validate = () => { } } } = require('../utils');
 const {
     listDataFromDb,
     createDataInDb,
@@ -41,8 +42,14 @@ const listProducts = async (req, res) => {
  */
 const createProduct = async (req, res) => {
     try {
-        const data = await createDataInDb(req.body, 'products');
-        sendSuccessResponse({ req, res }, 'ok', 201, data, 'Products Record Added Successfully.');
+        const { error } = validate(req.body, 'products');
+        const [isValid, errors] = [!error, error];
+        if (isValid) {
+            const data = await createDataInDb(req.body, 'products');
+            sendSuccessResponse({ req, res }, 'ok', 201, data, 'Products Record Added Successfully.');
+        } else {
+            sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid Product Payload.');
+        }
     } catch (err) {
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Creating Products Record.');
     }
@@ -73,16 +80,31 @@ const updateProduct = async (req, res) => {
     try {
         const isExist = await getDataFromDb(req.params.id, '', 'products');
         let data = null;
-        if (isExist) {
-            data = await updateDataInDb(req.params.id, req.body, 'products');
+        if (!isExist) {
+            sendSuccessResponse(
+                { req, res },
+                'ok',
+                204,
+                {},
+                `No Record Found For Id: '${req.params.id}' In Products.`
+            );
+        } else {
+            const { error } = validate(req.body, 'products');
+            const [isValid, errors] = [!error, error];
+            if (isValid) {
+                data = await updateDataInDb(req.params.id, req.body, 'products');
+                data.password = undefined;
+                sendSuccessResponse(
+                    { req, res },
+                    'ok',
+                    200,
+                    data,
+                    `Products Record With Id: '${req.params.id}' Updated Successfully In Products.`
+                );
+            } else {
+                sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid Product Payload.');
+            }
         }
-        sendSuccessResponse(
-            { req, res },
-            'ok',
-            isExist ? 200 : 204,
-            isExist ? data : {},
-            isExist ? `Products Record With Id: '${req.params.id}' Updated Successfully In Products.` : `No Record Found For Id: '${req.params.id}' In Products.`
-        );
     } catch (err) {
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Updating Products Record.');
     }
