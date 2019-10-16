@@ -75,6 +75,12 @@ describe("/users", () => {
             expect(res.status).to.equal(200);
         });
 
+        it("should return validation error", async () => {
+            const { firstName, ...user } = users[0];
+            const res = await request(app).post(`/users`).send(user);
+            expect(res.status).to.equal(400);
+        });
+
         it("should return server error 500 when duplicate values for unique fields are passed", async () => {
             await model.create(users[0]);
             const res = await request(app).post(`/users`).send(users[0]);
@@ -99,6 +105,14 @@ describe("/users", () => {
             const res = await request(app).put(`/users/${_id}`).send(users[0]);
             expect(res.status).to.equal(200);
             expect(res.body.statusCode).to.equal(204);
+        });
+
+        it("should return validation error", async () => {
+            const doc = await model.create(users[0]);
+            const { _id } = doc;
+            const { firstName, ...user } = users[0];
+            const res = await request(app).put(`/users/${_id}`).send(user);
+            expect(res.status).to.equal(400);
         });
 
         it("should return server error 500", async () => {

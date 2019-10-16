@@ -86,6 +86,12 @@ describe("/products", () => {
             expect(res.status).to.equal(200);
         });
 
+        it("should return validation error", async () => {
+            const { productId, ...product } = products[0];
+            const res = await request(app).post(`/products`).send(product).set('Authorization', `Bearer ${token}`);
+            expect(res.status).to.equal(400);
+        });
+
         it("should return server error 500 when duplicate values for unique fields are passed", async () => {
             await model.create(products[0]);
             const res = await request(app).post(`/products`).send(products[0]).set('Authorization', `Bearer ${token}`);
@@ -110,6 +116,14 @@ describe("/products", () => {
             const res = await request(app).put(`/products/${_id}`).send(products[0]).set('Authorization', `Bearer ${token}`);
             expect(res.status).to.equal(200);
             expect(res.body.statusCode).to.equal(204);
+        });
+
+        it("should return validation error", async () => {
+            const { productId, ...product } = products[0];
+            const doc = await model.create(products[0]);
+            const { _id } = doc;
+            const res = await request(app).put(`/products/${_id}`).send(product).set('Authorization', `Bearer ${token}`);
+            expect(res.status).to.equal(400);
         });
 
         it("should return server error 500", async () => {

@@ -1,7 +1,7 @@
 const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
 const { authHelper } = require('../helpers');
 const { crudService } = require('../services');
-const { validationUtil: { validate = () => { } } } = require('../utils');
+const { validationUtil: { validate } } = require('../utils');
 const {
     createDataInDb,
     updateDataInDb,
