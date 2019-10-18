@@ -7,8 +7,14 @@ info:
     email: "amiransari2310@gmail.com"
 host: "localhost:3000"
 basePath: "/"
+securityDefinitions:
+  token:
+    description: ''
+    type: apiKey
+    name: Authorization
+    in: header
 schemes:
-- "http"
+- "http" 
 paths:
   /users:
     get:
@@ -169,7 +175,8 @@ paths:
         500:
           description: "Error In Login"
           schema:
-            $ref: "#/definitions/errorResponse"  
+            $ref: "#/definitions/errorResponse"
+  /auth/logout:
     get:
       tags:
       - "Auth"
@@ -220,6 +227,8 @@ paths:
           description: "Error In GET All"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     post:
       tags:
       - "Products"
@@ -245,6 +254,8 @@ paths:
           description: "Error In Product Create"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
   /products/{id}:
     get:
       tags:
@@ -268,6 +279,8 @@ paths:
           description: "Error In GET By Id"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     put:
       tags:
       - "Products"
@@ -298,6 +311,8 @@ paths:
           description: "Error In Update Product"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     delete:
       tags:
       - "Products"
@@ -319,7 +334,9 @@ paths:
         500:
           description: "Error In Remove By Id"
           schema:
-            $ref: "#/definitions/errorResponse"     
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: []  
   /carts:
     get:
       tags:
@@ -337,6 +354,8 @@ paths:
           description: "Error In GET Cart"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     post:
       tags:
       - "Carts"
@@ -362,6 +381,8 @@ paths:
           description: "Error In Product Create Or Add/Remove Products"
           schema:
             $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
 definitions:
   response:
     type: "object"
