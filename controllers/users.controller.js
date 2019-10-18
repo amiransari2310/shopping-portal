@@ -6,7 +6,6 @@ const {
 const { crudService } = require('../services');
 const {
     listDataFromDb,
-    createDataInDb,
     getDataFromDb,
     updateDataInDb,
     removeDataFromDb,
@@ -41,30 +40,6 @@ const listUsers = async (req, res) => {
         );
     } catch (err) {
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Fetching Users Records.');
-    }
-}
-
-/**
- * Request To Create A User
- */
-const createUser = async (req, res) => {
-    try {
-        const { error } = validate(req.body, 'users');
-        const [isValid, errors] = [!error, error];
-        if (isValid) {
-            log('info', {
-                message: `Creating User`,
-                payload: JSON.stringify(req.body),
-                timeStamp: new Date().toString()
-            });
-            const data = await createDataInDb(req.body, 'users');
-            const { _id } = data;
-            sendSuccessResponse({ req, res }, 'ok', 201, { _id }, 'Users Record Created Successfully.');
-        } else {
-            sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid User Payload.');
-        }
-    } catch (err) {
-        sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Creating Users Record.');
     }
 }
 
@@ -165,7 +140,6 @@ const removeUser = async (req, res) => {
 // Exporting Request Handlers
 module.exports = {
     listUsers,
-    createUser,
     getUser,
     updateUser,
     removeUser,

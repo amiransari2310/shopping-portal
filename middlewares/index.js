@@ -1,4 +1,5 @@
 const { jwtHelper: { decodeToken, verifyToken } = {} } = require('../helpers');
+const { crudService: { findOneFromDb } } = require('../services');
 const {
     responseHandler: { sendErrorResponse, } = {},
     logUtil: { log } = {},
@@ -18,30 +19,44 @@ const {
 /**
  * To Validate The Authorisation Token
  */
-const authMiddleware = async (req, res, next) => {
-    const { headers: { authorization = '' } = {} } = req;
-    const token = authorization.startsWith('Bearer') ? authorization.replace('Bearer ', '').trim() : authorization;
-    if (!token) {
-        sendErrorResponse(
-            { req, res },
-            'badRequest',
-            400,
-            {},
-            message = 'Missing Authorization Token.'
-        );
-    } else {
-        const decodedToken = verifyToken(token);
-        if (!decodedToken) {
+const authMiddleware = (allowedRoles) => {
+    return async (req, res, next) => {
+        const { headers: { authorization = '' } = {} } = req;
+        const token = authorization.startsWith('Bearer') ? authorization.replace('Bearer ', '').trim() : authorization;
+        if (!token) {
             sendErrorResponse(
                 { req, res },
-                'unauthorize',
-                401,
+                'badRequest',
+                400,
                 {},
-                message = 'Invalid/Expired Token.'
+                message = 'Missing Authorization Token.'
             );
         } else {
-            req.user = decodedToken;
-            next();
+            const decodedToken = verifyToken(token);
+            const isSessionActive = await checkActiveSession(token);
+            if (!decodedToken || !isSessionActive) {
+                sendErrorResponse(
+                    { req, res },
+                    'unauthorize',
+                    401,
+                    {},
+                    message = 'Invalid/Expired Token.'
+                );
+            } else {
+                const { role } = decodedToken;
+                if (!allowedRoles.length || allowedRoles.includes(role)) {
+                    req.user = decodedToken;
+                    next();
+                } else {
+                    sendErrorResponse(
+                        { req, res },
+                        'forbidden',
+                        403,
+                        {},
+                        message = 'Invalid Access For User.'
+                    );
+                }
+            }
         }
     }
 };
@@ -58,6 +73,13 @@ const logRequestMiddleware = (req, res, next) => {
         timeStamp: new Date().toString(),
     });
     next();
+}
+
+/**
+ * To Check If Token Exists In Session i.e Active Session Or Not
+ */
+const checkActiveSession = async (token) => {
+    return findOneFromDb({ token }, '', 'sessions');
 }
 
 // Exporting Middleware Methods

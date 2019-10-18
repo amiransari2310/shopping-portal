@@ -1,0 +1,13 @@
+{
+    "users": [
+        "admin"
+    ],
+    "products": [
+        "admin",
+        "customer"
+    ],
+    "carts": [
+        "admin",
+        "customer"
+    ]
+}

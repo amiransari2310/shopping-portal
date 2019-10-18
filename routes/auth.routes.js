@@ -5,10 +5,13 @@ const { authMiddleware } = require('../middlewares');
 const {
     login,
     logout,
+    register,
 } = authController;
+
+router.route('/register').post(register);
 
 router.route('/login').post(login);
 
-router.route('/logout').get(authMiddleware, logout);
+router.route('/logout').get(authMiddleware([]), logout);
 
 module.exports = router;

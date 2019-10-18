@@ -1,4 +1,8 @@
-const { responseHandler: { sendSuccessResponse, sendErrorResponse } = {}, logUtil: { log } } = require('../utils');
+const {
+    responseHandler: { sendSuccessResponse, sendErrorResponse } = {},
+    logUtil: { log },
+    validationUtil: { validate } = {},
+} = require('../utils');
 const { jwtHelper } = require('../helpers');
 const { crudService } = require('../services');
 const {
@@ -7,6 +11,31 @@ const {
     removeDataFromDb,
     findOneFromDb,
 } = crudService;
+
+/**
+ * Handles Request To Do User Registeration
+ */
+const register = async (req, res) => {
+    try {
+        const { error } = validate(req.body, 'users');
+        const [isValid, errors] = [!error, error];
+        if (isValid) {
+            log('info', {
+                message: `Creating/Registering User`,
+                payload: JSON.stringify(req.body),
+                timeStamp: new Date().toString()
+            });
+            const data = await createDataInDb(req.body, 'users');
+            const { _id } = data;
+            sendSuccessResponse({ req, res }, 'ok', 201, { _id }, 'Users Record Created/Registered Successfully.');
+        } else {
+            sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid User Payload.');
+        }
+    } catch (err) {
+        sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Creating/Registering User.');
+    }
+}
+
 
 /**
  * Handles Request To Do User Login
@@ -144,6 +173,7 @@ const handleSessionOnLogout = async (user) => {
 
 // Exporting Request Handlers
 module.exports = {
+    register,
     login,
     logout,
 }

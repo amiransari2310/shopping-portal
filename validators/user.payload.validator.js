@@ -8,6 +8,7 @@ const schema = Joi.object({
     emailId: Joi.string().email(),
     mobileNumber: Joi.number(),
     password: Joi.string(),
+    role: Joi.string().valid('admin', 'customer')
 });
 
 // Exporting Function That Validates User Paylod

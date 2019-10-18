@@ -16,6 +16,25 @@ describe('/auth', () => {
         }
     });
 
+    describe('POST /register', () => {
+        it('should create a record in db', async () => {
+            const res = await request(app).post(`/auth/register`).send(users[0]);
+            expect(res.status).to.equal(200);
+        });
+
+        it('should return validation error', async () => {
+            const { firstName, ...user } = users[0];
+            const res = await request(app).post(`/auth/register`).send(user);
+            expect(res.status).to.equal(400);
+        });
+
+        it('should return server error 500 when duplicate values for unique fields are passed', async () => {
+            await model.create(users[0]);
+            const res = await request(app).post(`/auth/register`).send(users[0]);
+            expect(res.status).to.equal(500);
+        });
+    });
+
     describe('POST /login', () => {
         it('should login successfully', async () => {
             await model.create(users[0]);

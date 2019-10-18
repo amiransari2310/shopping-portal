@@ -6,6 +6,7 @@ const statusCodeMapping = {
     missingParam: 422,
     badRequest: 400,
     unauthorize: 401,
+    forbidden: 403,
 };
 
 exports = {

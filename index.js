@@ -7,6 +7,7 @@ const {
     apiUtil: { getApiSwaggerJson } = {},
 } = require('./utils');
 const { authMiddleware, logRequestMiddleware, } = require('./middlewares');
+const roleAccessMapping = require('./constants/roleAccessMapping.json');
 
 const init = () => {
     (async () => {
@@ -37,9 +38,9 @@ app.use(logRequestMiddleware);
  * App routes
  */
 app.use('/auth', authRoutes);
-app.use('/users', usersRoutes);
-app.use('/products', authMiddleware, productsRoutes);
-app.use('/carts', authMiddleware, cartsRoutes);
+app.use('/users', authMiddleware(roleAccessMapping['users']), usersRoutes);
+app.use('/products', authMiddleware(roleAccessMapping['products']), productsRoutes);
+app.use('/carts', authMiddleware(roleAccessMapping['carts']), cartsRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(getApiSwaggerJson()));
 
