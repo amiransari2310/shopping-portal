@@ -1,11 +1,14 @@
-const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
+const {
+    responseHandler: { sendSuccessResponse, sendErrorResponse } = {},
+    validationUtil: { validate } = {},
+    logUtil: { log } = {},
+} = require('../utils');
 const { authHelper } = require('../helpers');
 const { crudService } = require('../services');
-const { validationUtil: { validate } } = require('../utils');
 const {
     createDataInDb,
     updateDataInDb,
-    findOneFromDb
+    findOneFromDb,
 } = crudService;
 
 /**
@@ -15,6 +18,10 @@ const getCart = async (req, res) => {
     try {
         const userObject = authHelper.getUserObject(req);
         const { _id: user } = userObject;
+        log('info', {
+            message: `Get Cart For User: '${user}'`,
+            timeStamp: new Date().toString()
+        });
         const data = await findOneFromDb({ user }, '', 'carts');
         sendSuccessResponse(
             { req, res },
@@ -44,15 +51,19 @@ const createOrupdateCart = async (req, res) => {
             if (!opEnums.includes(op)) {
                 sendErrorResponse({ req, res }, 'badRequest', 400, {}, `Missing/Invalid Value For Query Param: 'op'. Possible values are: [${opEnums}]`);
             } else {
-                const cart = await findOneFromDb({ user }, '', 'carts');
+                const cart = await findOneFromDb({ user }, '', 'carts');    // Checking If Cart Already Exists
                 const cartObj = cart ? cart.toObject() : {};
 
                 if (!cart) {
                     if (op === 'add') {
+                        log('info', {
+                            message: `Creating Cart For User: '${user}'`,
+                            timeStamp: new Date().toString()
+                        });
                         const { products: newProductList = [] } = payload;
                         const { products, totalCost } = addProducts([], newProductList, 0);
                         const createPayload = { user, products, totalCost };
-                        data = await createDataInDb(createPayload, 'carts');
+                        data = await createDataInDb(createPayload, 'carts');    // Creating NEw Cart
                         sendSuccessResponse(
                             { req, res },
                             'ok',
@@ -70,8 +81,12 @@ const createOrupdateCart = async (req, res) => {
                         );
                     }
                 } else {
+                    log('info', {
+                        message: `Updating Cart For User: '${user}'`,
+                        timeStamp: new Date().toString()
+                    });
                     const updatePayload = getCartData(cart, payload, op);
-                    data = await updateDataInDb(cartObj._id, updatePayload, 'carts');
+                    data = await updateDataInDb(cartObj._id, updatePayload, 'carts');       // Updating Cart If Already Exists
                     sendSuccessResponse(
                         { req, res },
                         'ok',
@@ -85,7 +100,6 @@ const createOrupdateCart = async (req, res) => {
             sendErrorResponse({ req, res }, 'badRequest', 400, errors, 'Invalid Cart Payload.');
         }
     } catch (err) {
-        console.log(err)
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Updating Cart Record.');
     }
 }

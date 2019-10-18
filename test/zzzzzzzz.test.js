@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-const expect = require("chai").expect;
-const app = require("../index");
+const expect = require('chai').expect;
 
-after(function (done) {
+after((done) => {
     return mongoose.disconnect(done);
 });
 
-describe("mongoose error connection event", () => {
+describe('mongoose error connection event', () => {
     it('should call mongoose error event', async () => {
         try {
             return await mongoose.connect('invalidConnectionString');
@@ -16,7 +15,7 @@ describe("mongoose error connection event", () => {
     });
 });
 
-describe("mongoose close connection event", () => {
+describe('mongoose close connection event', () => {
     it('should call closeConnection() on process exit', () => {
         process.emit('SIGINT');
     });

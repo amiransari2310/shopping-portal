@@ -24,11 +24,16 @@ const generateToken = (payload) => {
 //     try {
 //         return jwt.decode(token) || {};
 //     } catch (err) {
-//         console.log("Error While Decoding: ", err);
+//         console.log('Error While Decoding: ', err);
 //         throw err;
 //     }
 // }
 
+/**
+ * Function To Verify A JWT Token
+ * @param {string} token - JWT Token 
+ * @returns {object} - Decoded Object Or null
+ */
 const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(token, secretKey);
@@ -38,6 +43,7 @@ const verifyToken = (token) => {
     }
 }
 
+// Exporting JWT Helper Methods
 module.exports = {
     // decodeToken,
     generateToken,

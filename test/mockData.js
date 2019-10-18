@@ -14,19 +14,17 @@ module.exports = {
 		emailId: 'userTwo@xyz.com',
 		mobileNumber: 1234567890,
 		password: 'test'
-	}
-	],
+	}],
 	cartProducts: {
 		products: [{
-			productId: "product1",
+			productId: 'product1',
 			quantity: 1,
 			costPerUnit: 10
 		},
 		{
-			productId: "product2",
+			productId: 'product2',
 			quantity: 2,
 			costPerUnit: 5
-		}
-		]
+		}]
 	}
 }

@@ -1,6 +1,9 @@
-const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
+const {
+    responseHandler: { sendSuccessResponse, sendErrorResponse, } = {},
+    validationUtil: { validate } = {},
+    logUtil: { log } = {},
+} = require('../utils');
 const { crudService } = require('../services');
-const { validationUtil: { validate } } = require('../utils');
 const {
     listDataFromDb,
     createDataInDb,
@@ -15,6 +18,11 @@ const {
 const listProducts = async (req, res) => {
     try {
         const { filter, sort, select, page, count } = req.query;
+        log('info', {
+            message: `Fetching All Products`,
+            params: req.query,
+            timeStamp: new Date().toString()
+        });
         let sortOn;
         if (sort) {
             const [key, val] = sort.trim()[0] === '-' ? [sort.trim().substr(1), -1] : [sort, 1];
@@ -45,6 +53,11 @@ const createProduct = async (req, res) => {
         const { error } = validate(req.body, 'products');
         const [isValid, errors] = [!error, error];
         if (isValid) {
+            log('info', {
+                message: `Creating Product`,
+                payload: JSON.stringify(req.body),
+                timeStamp: new Date().toString()
+            });
             const data = await createDataInDb(req.body, 'products');
             sendSuccessResponse({ req, res }, 'ok', 201, data, 'Products Record Added Successfully.');
         } else {
@@ -60,6 +73,11 @@ const createProduct = async (req, res) => {
  */
 const getProduct = async (req, res) => {
     try {
+        log('info', {
+            message: `Get Product By Id`,
+            id: req.params.id,
+            timeStamp: new Date().toString()
+        });
         const data = await getDataFromDb(req.params.id, '', 'products');
         sendSuccessResponse(
             { req, res },
@@ -92,6 +110,12 @@ const updateProduct = async (req, res) => {
             const { error } = validate(req.body, 'products');
             const [isValid, errors] = [!error, error];
             if (isValid) {
+                log('info', {
+                    message: `Update Product By Id`,
+                    id: req.params.id,
+                    payload: JSON.stringify(req.body),
+                    timeStamp: new Date().toString()
+                });
                 data = await updateDataInDb(req.params.id, req.body, 'products');
                 data.password = undefined;
                 sendSuccessResponse(
@@ -118,6 +142,11 @@ const removeProduct = async (req, res) => {
         const isExist = await getDataFromDb(req.params.id, '', 'products');
         let data = null;
         if (isExist) {
+            log('info', {
+                message: `Remove Product By Id`,
+                id: req.params.id,
+                timeStamp: new Date().toString()
+            });
             data = await removeDataFromDb(req.params.id, 'products');
         }
         sendSuccessResponse(

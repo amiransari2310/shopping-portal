@@ -1,5 +1,8 @@
 const { jwtHelper: { decodeToken, verifyToken } = {} } = require('../helpers');
-const { responseHandler: { sendErrorResponse, } = {} } = require('../utils');
+const {
+    responseHandler: { sendErrorResponse, } = {},
+    logUtil: { log } = {},
+} = require('../utils');
 
 /**
  * To decode token and add logged in user object in req object
@@ -13,7 +16,7 @@ const { responseHandler: { sendErrorResponse, } = {} } = require('../utils');
 // };
 
 /**
- * To validate the authorisation token
+ * To Validate The Authorisation Token
  */
 const authMiddleware = async (req, res, next) => {
     const { headers: { authorization = '' } = {} } = req;
@@ -43,8 +46,23 @@ const authMiddleware = async (req, res, next) => {
     }
 };
 
-// Exporting middleware methods
+/**
+ * To Log The Request Details
+ */
+const logRequestMiddleware = (req, res, next) => {
+    log('info', {
+        url: req.url,
+        method: req.method,
+        client: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        message: `'${req.method}' request from '${req.headers['x-forwarded-for'] || req.connection.remoteAddress}' client at ${new Date().toString()}`,
+        timeStamp: new Date().toString(),
+    });
+    next();
+}
+
+// Exporting Middleware Methods
 module.exports = {
     // sessionMiddleware,
     authMiddleware,
+    logRequestMiddleware,
 }

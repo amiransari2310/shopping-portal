@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
+const { authHelper: { hashPassword, validatePassword } } = require('../helpers');
 
 const usersSchema = new Schema({
     firstName: {
@@ -35,8 +35,7 @@ const usersSchema = new Schema({
 usersSchema.pre('save', async function (next) {
     try {
         const { password: plainTextPassword } = this;
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(plainTextPassword, salt); // Hashing And Overwriting Plain Text Password
+        this.password = await hashPassword(plainTextPassword); // Hashing And Overwriting Plain Text Password
         next();
     } catch (err) {
         next(err);
@@ -52,7 +51,7 @@ usersSchema.pre('save', async function (next) {
 usersSchema.methods.comparePassword = function (plainTextPassword, next) {
     try {
         const { password: hashedPassword } = this;
-        const isMatch = bcrypt.compareSync(plainTextPassword, hashedPassword);
+        const isMatch = validatePassword(plainTextPassword, hashedPassword);
         return next(null, isMatch);
     } catch (err) {
         return next(err);

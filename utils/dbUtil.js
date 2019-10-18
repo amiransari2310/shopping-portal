@@ -14,19 +14,19 @@ const initConnection = () => {
         mongoose.connect(dbConfig.mongoURI, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true });
 
         // When Successfully Connected
-        mongoose.connection.on('connected', function () {
-            console.log('Mongoose default connection open to ' + dbConfig.mongoURI);
+        mongoose.connection.on('connected', () => {
+            console.log(`Mongoose default connection open to ${dbConfig.mongoURI}`);
             resolve();
         });
 
         // If The Connection Throws An Error
-        mongoose.connection.on('error', function (err) {
-            console.log('Mongoose default connection error: ' + err);
+        mongoose.connection.on('error', (err) => {
+            console.log(`Mongoose default connection error: ${err}`);
             reject(err);
         });
 
         // When The Connection Is Disconnected
-        mongoose.connection.on('disconnected', function () {
+        mongoose.connection.on('disconnected', () => {
             console.log('Mongoose default connection disconnected');
         });
     });
@@ -36,7 +36,7 @@ const initConnection = () => {
  * Function To Close Mongoose Connection
  */
 const closeConnection = () => {
-    mongoose.connection.close(function () {
+    mongoose.connection.close(() => {
         console.log('Mongoose default connection disconnected through app termination');
         process.exit(0);
     });
@@ -46,11 +46,15 @@ const closeConnection = () => {
  * Function To Load Products In DB
  */
 const loadData = async () => {
-    const payload = require('../constants/inventory.json');
-    const isProductsExists = await checkIfCollectionExists('products');
-    if (isProductsExists) await mongoose.connection.collections['products'].deleteMany({});
-    await insertManyInDb(payload, 'products');
-    console.log("Products Added Successfully.");
+    try {
+        const payload = require('../constants/inventory.json');
+        const isProductsExists = await checkIfCollectionExists('products');
+        if (isProductsExists) await mongoose.connection.collections['products'].deleteMany({});
+        await insertManyInDb(payload, 'products');
+        console.log('Products Added Successfully.');
+    } catch (err) {
+        throw err;
+    }
 }
 
 /**
@@ -59,9 +63,13 @@ const loadData = async () => {
  * @return {boolesn} - Flag If Collection Exists Or Not
  */
 const checkIfCollectionExists = async (collectionName) => {
-    let collectionList = await mongoose.connection.db.listCollections().toArray();
-    collectionList = collectionList.map(({ name }) => name);
-    return collectionList.includes(collectionName);
+    try {
+        let collectionList = await mongoose.connection.db.listCollections().toArray();
+        collectionList = collectionList.map(({ name }) => name);
+        return collectionList.includes(collectionName);
+    } catch (err) {
+        throw err;
+    }
 }
 
 // Exporting Db Utility Methods

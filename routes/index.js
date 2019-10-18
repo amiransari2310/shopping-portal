@@ -1,7 +1,7 @@
-const usersRoutes = require('./users.route');
-const productsRoutes = require('./products.route');
-const authRoutes = require('./auth.route');
-const cartsRoutes = require('./carts.route');
+const usersRoutes = require('./users.routes');
+const productsRoutes = require('./products.routes');
+const authRoutes = require('./auth.routes');
+const cartsRoutes = require('./carts.routes');
 
 module.exports = {
     usersRoutes,

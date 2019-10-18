@@ -1,5 +1,10 @@
 const { validateUserPayload, validateProductPayload, validateCartPayload } = require('../validators');
 
+/**
+ * Function To Valid Payload For POST/PUT Requests
+ * @param {objcet} payload - Payload To Validate
+ * @returns {object} Validation Result
+ */
 const validate = (payload, entity) => {
     let validationResponse;
     switch (entity) {
@@ -18,6 +23,7 @@ const validate = (payload, entity) => {
     return validationResponse;
 }
 
+// Exporting Validtion Utility Methods
 module.exports = {
     validate,
 };

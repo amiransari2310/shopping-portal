@@ -10,4 +10,5 @@ const schema = Joi.object({
     password: Joi.string(),
 });
 
+// Exporting Function That Validates User Paylod
 module.exports = (payload) => schema.validate(payload);

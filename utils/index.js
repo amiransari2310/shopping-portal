@@ -1,11 +1,13 @@
-const dbUtil = require('./dbUtil.js');
-const apiUtil = require('./apiUtil.js');
-const responseHandler = require('./responseHandler.js');
+const dbUtil = require('./dbUtil');
+const apiUtil = require('./apiUtil');
+const responseHandler = require('./responseHandler');
 const validationUtil = require('./validationUtil');
+const logUtil = require('./logUtil');
 
 module.exports = {
     dbUtil,
     apiUtil,
     responseHandler,
     validationUtil,
+    logUtil,
 }

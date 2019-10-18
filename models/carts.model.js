@@ -8,20 +8,20 @@ const cartsSchema = new Schema({
     },
     products: [{
         productId: {
-            type: String
+            type: String,
         },
         quantity: {
-            type: Number
+            type: Number,
         },
         costPerUnit: {
-            type: Number
+            type: Number,
         },
         cost: {
-            type: Number
+            type: Number,
         }
     }],
     totalCost: {
-        type: Number
+        type: Number,
     }
 });
 

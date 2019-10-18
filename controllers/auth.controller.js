@@ -1,4 +1,4 @@
-const { responseHandler: { sendSuccessResponse, sendErrorResponse, } = {} } = require('../utils');
+const { responseHandler: { sendSuccessResponse, sendErrorResponse } = {}, logUtil: { log } } = require('../utils');
 const { jwtHelper } = require('../helpers');
 const { crudService } = require('../services');
 const {
@@ -14,6 +14,10 @@ const {
 const login = async (req, res) => {
     try {
         const { user, password } = req.body;
+        log('info', {
+            message: `Login for User: '${user}'`,
+            timeStamp: new Date().toString()
+        });
         if (!user) {
             sendErrorResponse({ req, res }, 'missingParam', 422, {}, 'Missing Required Param User Name/Email.');
         }
@@ -53,14 +57,13 @@ const login = async (req, res) => {
                                 'Login Successfull.'
                             );
                         } else {
-                            sendErrorResponse({ req, res }, 'badRequest', 400, err, 'Invalid Credentials.');
+                            sendErrorResponse({ req, res }, 'badRequest', 400, {}, 'Invalid Credentials.');
                         }
                     }
                 });
             }
         }
     } catch (err) {
-        console.log(err)
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Login.');
     }
 }
@@ -71,6 +74,10 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     try {
         const { user: { _id: user } = {} } = req;
+        log('info', {
+            message: `Logout for User: '${user}'`,
+            timeStamp: new Date().toString()
+        });
         await handleSessionOnLogout(user);
         sendSuccessResponse(
             { req, res },
@@ -79,7 +86,6 @@ const logout = async (req, res) => {
             'Logout Successfull.'
         );
     } catch (err) {
-        console.log(err)
         sendErrorResponse({ req, res }, 'error', 500, err, 'Error While Logout.');
     }
 }
@@ -94,13 +100,21 @@ const handleSessionOnLogin = async (user, token) => {
     try {
         const isSessionExists = await findOneFromDb({ user }, '', 'sessions');
         if (isSessionExists) {
+            log('info', {
+                message: `Updating Session For User: '${user}'`,
+                timeStamp: new Date().toString()
+            });
             const sessionObj = isSessionExists.toObject();
             const { _id: id } = sessionObj;
             const updatedSession = { ...sessionObj, token };
-            await updateDataInDb(id, updatedSession, 'sessions');
+            await updateDataInDb(id, updatedSession, 'sessions');       // Updating Session WIth New Token If Session Already Exists
             return id;
         } else {
-            const session = await createDataInDb({
+            log('info', {
+                message: `Creating Session For User: '${user}'`,
+                timeStamp: new Date().toString()
+            });
+            const session = await createDataInDb({      // Creating New Session
                 user,
                 token,
             }, 'sessions');
@@ -113,12 +127,16 @@ const handleSessionOnLogin = async (user, token) => {
 
 /**
  * Removes Session On Logout
- * @param {string} user - UserId Of the LoggedIn User
+ * @param {string} user - UserId Of The LoggedIn User
  */
 const handleSessionOnLogout = async (user) => {
     try {
-        const session = await findOneFromDb({ user }, '', 'sessions') || {};
-        await removeDataFromDb(session._id, 'sessions');
+        log('info', {
+            message: `Clearing Session For User: '${user}'`,
+            timeStamp: new Date().toString()
+        });
+        const session = await findOneFromDb({ user }, '', 'sessions');
+        if (session) await removeDataFromDb(session._id, 'sessions');    // Clearing Session on Logout
     } catch (err) {
         throw err;
     }

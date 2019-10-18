@@ -10,4 +10,5 @@ const schema = Joi.object({
     products: Joi.array().items(productsSchema),
 });
 
+// Exporting Function That Validates Cart Paylod
 module.exports = (payload) => schema.validate(payload);

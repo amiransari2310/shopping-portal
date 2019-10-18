@@ -9,4 +9,5 @@ const schema = Joi.object({
     stock: Joi.number().min(1).required(),
 });
 
+// Exporting Function That Validates Product Paylod
 module.exports = (payload) => schema.validate(payload);

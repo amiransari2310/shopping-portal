@@ -6,7 +6,7 @@ const {
     dbUtil: { initConnection, closeConnection, loadData } = {},
     apiUtil: { getApiSwaggerJson } = {},
 } = require('./utils');
-const { authMiddleware } = require('./middlewares');
+const { authMiddleware, logRequestMiddleware, } = require('./middlewares');
 
 const init = () => {
     (async () => {
@@ -14,7 +14,7 @@ const init = () => {
             await initConnection();
             await loadData();
         } catch (err) {
-            console.log("Error is => ", err);
+            console.log('Error is => ', err);
         }
     })();
 }
@@ -30,6 +30,8 @@ app.set('json spaces', 2);
 */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(logRequestMiddleware);
 
 /**
  * App routes
@@ -58,4 +60,5 @@ app.listen(3000, err => {
     }
 });
 
+// Exporting server instance
 module.exports = app;
