@@ -473,8 +473,6 @@ definitions:
   cart:
     type: "object"
     properties:
-      user:
-        type: "string"
       products:
         type: "array"
         items:
@@ -488,7 +486,3 @@ definitions:
               type: "integer"
             cost:
               type: "integer"
-      totalCost:
-        type: integer
-    required:
-      - user
