@@ -43,38 +43,23 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful GET All"
+          description: "Successful GET All Users"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In GET All"
+          description: "Server Error In GET All Users"
           schema:
             $ref: "#/definitions/errorResponse"
-    post:
-      tags:
-      - "Users"
-      summary: "Add a new User"
-      operationId: "createUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Valid User Object to Insert in Db"
-        required: true
-        schema:
-          $ref: "#/definitions/user"
-      responses:
-        200:
-          description: "Successful User Create"
-          schema:
-            $ref: "#/definitions/response"
-        500:
-          description: "Error In User Create"
+        403:
+          description: "Unauthorized Access Error In GET All Users"
           schema:
             $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
   /users/{id}:
     get:
       tags:
@@ -91,13 +76,23 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful GET By Id"
+          description: "Successful GET By Id In Users"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In GET By Id"
+          description: "Server Error In GET By Id In Users"
           schema:
             $ref: "#/definitions/errorResponse"
+        403:
+          description: "Unauthorized Access Error In GET By Id In Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In GET By Id In Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     put:
       tags:
       - "Users"
@@ -125,9 +120,19 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Update User"
+          description: "Server Error In Update User"
           schema:
             $ref: "#/definitions/errorResponse"
+        403:
+          description: "Unauthorized Access Error In Update Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In Update Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
     delete:
       tags:
       - "Users"
@@ -143,13 +148,23 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful Remove By Id"
+          description: "Successful Remove By Id In Users"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Remove By Id"
+          description: "Server Error In Remove By Id In Users"
           schema:
-            $ref: "#/definitions/errorResponse"     
+            $ref: "#/definitions/errorResponse"
+        403:
+          description: "Unauthorized Access Error In Remove Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In Remove Users"
+          schema:
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: [] 
   /auth/login:
     post:
       tags:
@@ -176,6 +191,14 @@ paths:
           description: "Error In Login"
           schema:
             $ref: "#/definitions/errorResponse"
+        422:
+          description: "Error In Login"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Error In Login"
+          schema:
+            $ref: "#/definitions/errorResponse"
   /auth/logout:
     get:
       tags:
@@ -190,9 +213,45 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In logout"
+          description: "Server Error In logout"
           schema:
-            $ref: "#/definitions/errorResponse"            
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In logout"
+          schema:
+            $ref: "#/definitions/errorResponse"
+      security:
+        - token: []
+  /auth/register:
+    post:
+      tags:
+      - "Auth"
+      summary: "Add/Register a new User"
+      operationId: "register"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Valid User Object to Insert in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "Successful User Create/Register"
+          schema:
+            $ref: "#/definitions/response"
+        500:
+          description: "Server Error In User Create/Register"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token/ Invalid Payload Error In User Create/Register"
+          schema:
+            $ref: "#/definitions/errorResponse"
   /products:
     get:
       tags:
@@ -220,11 +279,15 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful GET All"
+          description: "Successful GET All Products"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In GET All"
+          description: "Server Error In GET All Products"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In GET All Products"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -251,7 +314,11 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Product Create"
+          description: "Server Error In Product Create"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token / Invalid Payload Error In Product Create"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -272,11 +339,15 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful GET By Id"
+          description: "Successful GET By Id In Products"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In GET By Id"
+          description: "Server Error In GET By Id In Products"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In GET By Id In Products"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -308,7 +379,11 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Update Product"
+          description: "Server Error In Update Product"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token / Invalid Payload Error In Update Product"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -328,11 +403,15 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Successful Remove By Id"
+          description: "Successful Remove By Id In Products"
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Remove By Id"
+          description: "Server Error In Remove By Id In Products"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In Remove Product"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -351,7 +430,11 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In GET Cart"
+          description: "Server Error In GET Cart"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token Error In GET Users Cart"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -378,7 +461,11 @@ paths:
           schema:
             $ref: "#/definitions/response"
         500:
-          description: "Error In Product Create Or Add/Remove Products"
+          description: "Server Error In Create Or Add/Remove Products To Cart"
+          schema:
+            $ref: "#/definitions/errorResponse"
+        400:
+          description: "Missing Token / Invalid Payload Error In Add/Update Cart"
           schema:
             $ref: "#/definitions/errorResponse"
       security:
@@ -411,12 +498,14 @@ definitions:
           - 500
           - 422
           - 400
+          - 403
       status:
         type: "string"
         enum:
           - "error"
           - "missingParam"
           - "badRequest"
+          - "forbidden"
       data:
         type: "object"
       message:
@@ -435,6 +524,8 @@ definitions:
       mobileNumber:
         type: "integer"
       password:
+        type: "string"
+      role:
         type: "string"
     required:
     - "firstName"
